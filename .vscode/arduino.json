@@ -1,0 +1,6 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "sketch": "3.1.K_Mov-No_Rc\\3.1.K_Mov-No_Rc.ino",
+    "programmer": "arduinoisp"
+}
