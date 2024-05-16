@@ -4,13 +4,17 @@
 #include "stdlib.h"
 #include "conio.h"
 #include "ctype.h"
+#include "Ramp.h"
 #include <vector>
+#include "Servo.h"
+#include <windows.h>
 using namespace std;
 
 #define arm1 120
 #define arm2 135
 const double PI =  3.1415926;
 #define spacer printf("---------------------------\n")
+
 
 class point{
   public:
@@ -29,15 +33,57 @@ class point{
     void IK();
 };
 
+class Interpolation{
+  public:
+    rampInt myRamp;
+    int interpolationSwitch = 0;
+    int prevValue;
+
+    int go(int input, int duration, int movement){
+      char16_t type_mov;
+      if (input != prevValue){
+        interpolationSwitch = 0;  //we activate the code and let the interpolation work
+      }
+      switch (movement){
+        case 1: type_mov = LINEAR; break;
+        case 2: type_mov = QUADRATIC_INOUT; break;
+        case 3: type_mov = SINUSOIDAL_IN; break;
+        case 4: type_mov = EXPONENTIAL_IN; break;
+        case 5: type_mov = ELASTIC_IN; break;
+      }
+      if(interpolationSwitch == 0){  //with the object myramp we created we execute go ramp own function
+        myRamp.go(input,duration,type_mov, ONCEFORWARD);
+        interpolationSwitch = 1;
+      }
+
+      int output = myRamp.update();
+      return output;  //we return the value of next pos for one axis
+    }
+};
+
+Interpolation interpX;
+Interpolation interpY; //we create an interpolation object for each axis, it will return us each pos for each axis
+
 void mode2(vector<class point>&points);
-void path(vector<class point> points);
+void print_points(vector<class point> points);
+
+Servo servoinf, servosup, servosupext, servogir, servogirbase;
+
+void setup(){
+  //Serial.begin(9600);
+  servogir.attach(22);
+  servosup.attach(25);
+  servoinf.attach(23);
+  servosupext.attach(26);
+  servogirbase.attach(30);
+}
 
 
 
 
 int main(){
   printf("Welcome to Arm IV Control Program!\n");
-  printf("This program will help you control your RobotArm IV.\n");
+  printf("This program will help you control your RoboticArm Movements.\n");
   
   vector <class point> points;
   char mode;
@@ -58,16 +104,16 @@ int main(){
       case '1':
         point p1;
         p1.returnposDK();
-        spacer;
-        char add;
-        do{
-          puts("Do you want to add the point to the path?  Y / N");
-          add = getch();
-          add = tolower(add);
-        }while(add != 'y' && add != 'n');
-        if(add == 'y'){
-          points.push_back(p1);
-        }
+        //spacer;
+        //char add;
+        // do{
+        //   puts("Do you want to add the point to the path?  Y / N");
+        //   add = getch();
+        //   add = tolower(add);
+        // }while(add != 'y' && add != 'n');
+        // if(add == 'y'){
+        //   points.push_back(p1);
+        // }
         spacer;
         break;
       
@@ -76,15 +122,15 @@ int main(){
         //Getting initial angles for each joints
         point p2;
         p2.returnposIK();
-        spacer;
-        do{
-          puts("Do you want to add the point to the path?  Y / N");
-          add = getch();
-          add = tolower(add);
-        }while(add != 'y' && add != 'n');
-        if(add == 'y'){
-          points.push_back(p2);
-        }
+        // spacer;
+        // do{
+        //   puts("Do you want to add the point to the path?  Y / N");
+        //   add = getch();
+        //   add = tolower(add);
+        // }while(add != 'y' && add != 'n');
+        // if(add == 'y'){
+        //   points.push_back(p2);
+        // }
         spacer;
         break;
 
@@ -190,20 +236,22 @@ void mode2(vector <class point> &points){
       case '2':
         puts("");
         spacer;
-        do{printf("Which point do you want to remove? (1-%i)\n", points.size());scanf("%i", &entry);}while(entry < 0 || entry > points.size());
-        if(points.size() == 1){
+        if(points.size()==1 || points.size()==0){
+          printf("List is empty");
           points.clear();
-        }else{
-          points.erase(points.begin() + entry);
+          break;
         }
+        do{printf("Which point do you want to remove? (1-%i)\n", points.size());print_points(points);scanf("%i", &entry);}while(entry < 0 || entry > points.size());
+          points.erase(points.begin() + entry);
+        
         break;
         
       case '3':
-        bool cont = true;
-        while(cont){
+        while(true){
           puts("");
           spacer;
-          do{printf("Which point do you want to move to? (1-%i)\n", points.size());scanf("%i", &entry);}while(entry < 0 || entry > points.size());
+          do{
+            printf("Which point do you want to move to? (1-%i)\n", points.size()); print_points(points);scanf("%i", &entry);}while(entry < 0 || entry > points.size());
           //move to robot to point p1
           //
           //
@@ -216,7 +264,7 @@ void mode2(vector <class point> &points){
             add = tolower(add);
           }while(add != 'y' && add != 'n');
           if(add == 'n'){
-            cont = false;
+            break;
           }
         }
         break;
@@ -228,8 +276,9 @@ void mode2(vector <class point> &points){
   }while(mode2!='5');
 }
 
-void path(vector <class point> points){
+void print_points(vector <class point> points){
   for(int i=0; i < points.size(); i++){
+    spacer;
     printf("\nPoint %i:", i+1);
     printf("\n- ( %.2f , %.2f ) pos\n- ( %.2f , %.2f ) ang\n", points[i].x, points[i].y, points[i].ang1, points[i].ang2);
   }

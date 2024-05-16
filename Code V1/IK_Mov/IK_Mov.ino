@@ -1,16 +1,16 @@
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
+//#include <SPI.h>
+//#include <nRF24L01.h>
+//#include <RF24.h>
 #include <Servo.h>
 #include "printf.h"
 #include "math.h"
 
 #define arm1 = 120
 #define arm2 = 135
-#define DATARATE RF24_2MBPS
-const uint64_t pipes[2] = {0xF0F0F0F0E1LL, 0xF0F0F0F0D2LL};
+// #define DATARATE RF24_2MBPS
+// const uint64_t pipes[2] = {0xF0F0F0F0E1LL, 0xF0F0F0F0D2LL};
 
-RF24 radio(2, 3);
+// RF24 radio(2, 3);
 int ang1, ang2, ang3, ang4, anginf;
 /*
 int girogiractual = 120;
@@ -49,6 +49,7 @@ void loop()
 
   
 }
+
 
 
 
