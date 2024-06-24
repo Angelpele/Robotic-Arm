@@ -2,17 +2,17 @@
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
-#include "conio.h"
+//#include "conio.h"
 #include "ctype.h"
 #include "Ramp.h"
-#include <vector>
+#include "Vector.h"
 #include "Servo.h"
-#include <windows.h>
+//#include <windows.h>
 using namespace std;
 
 #define arm1 120
 #define arm2 135
-const double PI =  3.1415926;
+//const double PI =  3.1415926;  //It already exists a constant with Arduino.h
 #define spacer printf("---------------------------\n")
 
 
@@ -64,36 +64,42 @@ class Interpolation{
 Interpolation interpX;
 Interpolation interpY; //we create an interpolation object for each axis, it will return us each pos for each axis
 
-void mode2(vector<class point>&points);
-void print_points(vector<class point> points);
+void mode2(Vector<class point>&points);
+void print_points(Vector<class point> points);
 
 Servo servoinf, servosup, servosupext, servogir, servogirbase;
 
 void setup(){
-  //Serial.begin(9600);
+  Serial.begin(115200);
+  delay(1000);
   servogir.attach(22);
   servosup.attach(25);
   servoinf.attach(23);
   servosupext.attach(26);
   servogirbase.attach(30);
+  Serial.println("hello");
+  delay(1000);
+  programm();
 }
 
-
-
-
-int main(){
-  printf("Welcome to Arm IV Control Program!\n");
-  printf("This program will help you control your RoboticArm Movements.\n");
+void loop(){
   
-  vector <class point> points;
+}
+
+void programm(){
+  Serial.println("Welcome to Arm IV Control Program!");
+  delay(10);
+  Serial.print("This program will help you control your RoboticArm Movements.\n");
+  
+  Vector <class point> points;
   char mode;
   do{
 
     do{
-      puts("");
+      Serial.println("");
       spacer;
-      printf("Select the mode:\n1 - Point from angles\n2 - Angles from end point\n3 - Operation\n4 - End program\n");
-      mode = getch();
+      Serial.print("Select the mode:\n1 - Point from angles\n2 - Angles from end point\n3 - Operation\n4 - End program\n");
+      mode = Serial.parseInt();
     }while(mode<'1' || mode>'4');
 
     //FIRST LOOP//
@@ -108,7 +114,7 @@ int main(){
         //char add;
         // do{
         //   puts("Do you want to add the point to the path?  Y / N");
-        //   add = getch();
+        //   add = Serial.parseInt();
         //   add = tolower(add);
         // }while(add != 'y' && add != 'n');
         // if(add == 'y'){
@@ -125,7 +131,7 @@ int main(){
         // spacer;
         // do{
         //   puts("Do you want to add the point to the path?  Y / N");
-        //   add = getch();
+        //   add = Serial.parseInt();
         //   add = tolower(add);
         // }while(add != 'y' && add != 'n');
         // if(add == 'y'){
@@ -150,19 +156,19 @@ void point::returnposDK(){
   float max_range = arm1 + arm2;
   float min_range = 100;
   bool posible = true;
-  printf("\nIntroduce the angles of each joint\n");
+  Serial.print("\nIntroduce the angles of each joint\n");
   do{
-    printf("ang1 (0 - 180): ");
-    scanf("%f", &ang1);
+    Serial.print("ang1 (0 - 180): ");
+    ang1 = Serial.parseInt();
   }while(ang1 < 0 || ang1 > 180);
   do{
-    printf("ang2 (-40 - 140): ");
-    scanf("%f", &ang2);
+    Serial.print("ang2 (-40 - 140): ");
+    ang2 = Serial.parseInt();
   }while(ang2 < -40 || ang2 > 140);
-  puts("Correct angles introduced");
+  Serial.println("Correct angles introduced");
   spacer;  
   DK();
-  printf("Point selected: (%.1f / %.1f)\n", x, y);
+  Serial.print("Point selected: ("+String(x,1)+" / "+String(y,1)+")\n");
 
 }
 
@@ -179,27 +185,27 @@ void point::returnposIK(){
   float max_range = arm1 + arm2;
   float min_range = 100;
   bool posible = true;
-  printf("\nIntroduce the coords of the point you want to reach\n");
+  Serial.print("\nIntroduce the coords of the point you want to reach\n");
   do{
     do{
-      printf("x coord (0 - 255): ");
-      scanf("%f", &x);
+      Serial.print("x coord (0 - 255): ");
+      x=Serial.parseInt();
     }while(x < 0 || x > 255);
     do{
-      printf("y coord (60 - 255): ");
-      scanf("%f", &y);
+      Serial.print("y coord (60 - 255): ");
+      y=Serial.parseInt();
     }while(y < 0 || y > 255);
 
     float d = sqrt(x*x + y*y);
     if(d<=max_range && d>=min_range){
-      puts("Point available in the workspace");
+      Serial.println("Point available in the workspace");
       posible=false;
     }else{
-      puts("Point out of the workspace, try again\n");
+      Serial.println("Point out of the workspace, try again\n");
     }
   }while(posible);
   IK();
-  printf("The angles are (%.2f , %.2f)\n", ang1, ang2);
+  Serial.print("The angles are ("+String(ang1,2)+" , "+String(ang2,2)+"\n");
 
 }
 
@@ -208,23 +214,23 @@ void point::IK(){
   ang1 = (atan(y/x) - atan((arm2*(sin(-ang2*PI/180))) / (arm1 + (arm2*(cos(-ang2*PI/180))))))*180/PI;
 }
 
-void mode2(vector <class point> &points){
+void mode2(Vector <class point> &points){
   char mode2;
   do{
     do{
-      puts("");
+      Serial.println("");
       spacer;
-      printf("Select the operation:\n1 - Insert points\n2 - Remove points\n3 - Move to point\n4 - Path with points\n5 --> BACK\n");
-      mode2 = getch();
+      Serial.print("Select the operation:\n1 - Insert points\n2 - Remove points\n3 - Move to point\n4 - Path with points\n5 --> BACK\n");
+      mode2 = Serial.parseInt();
     }while(mode2<'1' || mode2>'5');
   
 
     switch (mode2){
       case '1':
         int entry;
-        puts("");
+        Serial.println("");
         spacer;
-        do{puts("Number of points?");scanf("%i", &entry);}while(entry <= 0);
+        do{Serial.println("Number of points?");entry=Serial.parseInt();}while(entry <= 0);
         for(int i=0; i<entry; i++){
           point p3;
           spacer;
@@ -234,24 +240,24 @@ void mode2(vector <class point> &points){
         break;
       
       case '2':
-        puts("");
+        Serial.println("");
         spacer;
         if(points.size()==1 || points.size()==0){
-          printf("List is empty");
+          Serial.print("List is empty");
           points.clear();
           break;
         }
-        do{printf("Which point do you want to remove? (1-%i)\n", points.size());print_points(points);scanf("%i", &entry);}while(entry < 0 || entry > points.size());
-          points.erase(points.begin() + entry);
+        do{Serial.print("Which point do you want to remove? ("+String(1-points.size())+")\n");print_points(points);entry=Serial.parseInt();}while(entry < 0 || entry > points.size());
+          points.remove(entry);
         
         break;
         
       case '3':
         while(true){
-          puts("");
+          Serial.println("");
           spacer;
           do{
-            printf("Which point do you want to move to? (1-%i)\n", points.size()); print_points(points);scanf("%i", &entry);}while(entry < 0 || entry > points.size());
+            Serial.print("Which point do you want to move to? ("+String(1-points.size())+")\n");print_points(points);entry=Serial.parseInt();}while(entry < 0 || entry > points.size());
           //move to robot to point p1
           //
           //
@@ -259,8 +265,8 @@ void mode2(vector <class point> &points){
           //
           char add;
           do{
-            puts("Do you want to move to other point?  Y / N");
-            add = getch();
+            Serial.println("Do you want to move to other point?  Y / N");
+            add = Serial.parseInt();
             add = tolower(add);
           }while(add != 'y' && add != 'n');
           if(add == 'n'){
@@ -268,6 +274,15 @@ void mode2(vector <class point> &points){
           }
         }
         break;
+      
+      case '4':
+        while(true){
+          spacer;
+          //mode3
+          //
+          //
+          //
+        }
       /*
       case 'P':
         puts("ok");
@@ -276,10 +291,10 @@ void mode2(vector <class point> &points){
   }while(mode2!='5');
 }
 
-void print_points(vector <class point> points){
+void print_points(Vector <class point> points){
   for(int i=0; i < points.size(); i++){
     spacer;
-    printf("\nPoint %i:", i+1);
-    printf("\n- ( %.2f , %.2f ) pos\n- ( %.2f , %.2f ) ang\n", points[i].x, points[i].y, points[i].ang1, points[i].ang2);
+    Serial.print("\nPoint "+String(i+1)+":");
+    Serial.print("\n- ( "+String(points[i].x,2)+" , "+String(points[i].y,2)+" ) pos\n- ( "+String(points[i].ang1,2)+" , "+String(points[i].ang2,2)+" ) ang\n");
   }
 }

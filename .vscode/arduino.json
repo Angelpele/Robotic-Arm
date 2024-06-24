@@ -1,6 +1,7 @@
 {
-    "configuration": "cpu=atmega2560",
     "board": "arduino:avr:mega",
-    "sketch": "Code V1\\IK_Mov\\IK_Mov.ino",
-    "programmer": "arduinoisp"
+    "sketch": "Code V1\\IK\\Ik.ino",
+    "programmer": "arduinoisp",
+    "port": "COM5",
+    "configuration": "cpu=atmega2560"
 }
