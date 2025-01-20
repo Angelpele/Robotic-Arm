@@ -2,7 +2,9 @@
 ## Arduino-Based Robotic Arm
 
 ### Presentation Photo:
-![image](https://github.com/user-attachments/assets/6278c84c-629a-4eab-a5c2-bc387418545e)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/6278c84c-629a-4eab-a5c2-bc387418545e" alt="Robotic Arm Presentation" />
+</div>
 
 This fully 3D-printed robotic arm has **3 Degrees of Freedom (DOF)** and is capable of moving through programmed paths or being remotely controlled.
 
