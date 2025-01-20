@@ -12,13 +12,13 @@ This fully 3D-printed robotic arm has **3 Degrees of Freedom (DOF)** and is capa
 
 ## Hardware Components
 
-| Component                 | Description                                     | Image                                           |
-|---------------------------|-------------------------------------------------|-------------------------------------------------|
-| **Arduino Mega Board**     | The main controller for the robotic arm.        | ![image](https://github.com/user-attachments/assets/4b530668-54f5-4da7-a167-ca8fb7dc8403) |
-| **Servo MG996R**           | Provides precise and reliable movement for the arm. | ![image](https://github.com/user-attachments/assets/6278c84c-629a-4eab-a5c2-bc387418545e) |
-| **Jumper Wires**           | Used for connections between components.        | N/A                                             |
-| **NRF24L01 Radio Module**  | Enables remote control of the robotic arm.      | ![image](https://github.com/user-attachments/assets/bfef76a2-627c-448e-bd71-983fd51cfc2e) |
-| **3D Printed Structure**   | Provides the physical frame and supports the servos. | N/A                                             |
+| Component                       | Description                                     | Image                                           |
+|---------------------------------|-------------------------------------------------|-------------------------------------------------|
+| **Arduino Mega Board 2560**     | The main controller for the robotic arm.        | ![image](https://github.com/user-attachments/assets/e6766c17-01ea-4975-b96d-f214c8e90fee)|
+| **Servo MG996R**                | Provides precise and reliable movement for the arm. | ![image](https://github.com/user-attachments/assets/4b530668-54f5-4da7-a167-ca8fb7dc8403) |
+| **Jumper Wires**                | Used for connections between components.        | N/A                                             |
+| **NRF24L01 Radio Module**       | Enables remote control of the robotic arm.      | ![image](https://github.com/user-attachments/assets/bfef76a2-627c-448e-bd71-983fd51cfc2e) |
+| **3D Printed Structure**        | Provides the physical frame and supports the servos. | N/A                                             |
 
 ---
 
@@ -40,7 +40,7 @@ The **Ramp Library** is used to ensure smooth and controlled movement of the rob
 
 ### Future Improvements:
 - Integration of **vision systems** for object recognition and manipulation.
-- Enhanced **feedback systems** using sensors to provide better control and precision.
-- Integration with advanced AI for autonomous decision-making.
+- Enhanced **feedback systems** using magnetic encoders and sensors to provide better control and precision.
+- Upgrade of servo motors to brushless with closed loop
 
 ---
