@@ -71,42 +71,43 @@ Servo servoinf, servosup, servosupext, servogir, servogirbase;
 
 void setup(){
   Serial.begin(115200);
+  Serial.setTimeout(2000);
   delay(1000);
   servogir.attach(22);
   servosup.attach(25);
   servoinf.attach(23);
   servosupext.attach(26);
   servogirbase.attach(30);
-  Serial.println("hello");
-  delay(1000);
-  programm();
-}
-
-void loop(){
-  
-}
-
-void programm(){
   Serial.println("Welcome to Arm IV Control Program!");
   delay(10);
   Serial.print("This program will help you control your RoboticArm Movements.\n");
+  delay(1000);
   
+}
+
+void loop(){
   Vector <class point> points;
   char mode;
+  delay(500);
   do{
-
     do{
-      Serial.println("");
-      spacer;
-      Serial.print("Select the mode:\n1 - Point from angles\n2 - Angles from end point\n3 - Operation\n4 - End program\n");
-      mode = Serial.parseInt();
-    }while(mode<'1' || mode>'4');
-
+      if(Serial.available()){
+        Serial.print("Select the mode:\n1 - Point from angles\n2 - Angles from end point\n3 - Operation\n4 - End program\n");
+      }
+      char mode = Serial.read();
+      Serial.println(mode);
+    }while (mode<1 || mode>4);
+    
+    Serial.println("");
+    //spacer;
+     
+    Serial.println(mode);
+     
     //FIRST LOOP//
     //..........//
     switch (mode)
     {
-      
+       
       case '1':
         point p1;
         p1.returnposDK();
@@ -120,9 +121,9 @@ void programm(){
         // if(add == 'y'){
         //   points.push_back(p1);
         // }
-        spacer;
+        //spacer;
         break;
-      
+       
       //-----------------------------------------------//
       case '2':
         //Getting initial angles for each joints
@@ -139,16 +140,16 @@ void programm(){
         // }
         spacer;
         break;
-
+      
       //--------------------------------------------------//
       //SECOND LOOP//
       case '3':
         mode2(points);
         break;
-      
+       
     }
   }while(mode!='4');
-  return 0;
+    Serial.println("mode exit");  
 }
 
 
