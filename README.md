@@ -1,7 +1,6 @@
 # Robotic Arm
 ## Arduino-Based Robotic Arm
 
-### Presentation Photo:
 <div align="center">
   <img src="https://github.com/user-attachments/assets/6278c84c-629a-4eab-a5c2-bc387418545e" alt="Robotic Arm Presentation" />
 </div>
