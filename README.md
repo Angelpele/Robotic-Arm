@@ -14,10 +14,10 @@ This fully 3D-printed robotic arm has **3 Degrees of Freedom (DOF)** and is capa
 
 | Component                       | Description                                     | Image                                           |
 |---------------------------------|-------------------------------------------------|-------------------------------------------------|
-| **Arduino Mega Board 2560**     | The main controller for the robotic arm.        | ![image](https://github.com/user-attachments/assets/e6766c17-01ea-4975-b96d-f214c8e90fee)|
-| **Servo MG996R**                | Provides precise and reliable movement for the arm. | ![image](https://github.com/user-attachments/assets/4b530668-54f5-4da7-a167-ca8fb7dc8403) |
+| **Arduino Mega Board 2560**     | The main controller for the robotic arm.        | <img src="https://github.com/user-attachments/assets/e6766c17-01ea-4975-b96d-f214c8e90fee" width="189" />|
+| **Servo MG996R**                | Provides precise and reliable movement for the arm. |<img src="https://github.com/user-attachments/assets/4b530668-54f5-4da7-a167-ca8fb7dc8403" width="189" /> |
 | **Jumper Wires**                | Used for connections between components.        | N/A                                             |
-| **NRF24L01 Radio Module**       | Enables remote control of the robotic arm.      | ![image](https://github.com/user-attachments/assets/bfef76a2-627c-448e-bd71-983fd51cfc2e) |
+| **NRF24L01 Radio Module**       | Enables remote control of the robotic arm.      | <img src="https://github.com/user-attachments/assets/bfef76a2-627c-448e-bd71-983fd51cfc2e" width="189" /> |
 | **3D Printed Structure**        | Provides the physical frame and supports the servos. | N/A                                             |
 
 ---
